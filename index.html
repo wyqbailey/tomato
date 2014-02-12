@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>tomato</title>
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/knobKnob.css">
+    <link rel="stylesheet" href="css/pikaday.css">
+    <style>
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+            -webkit-border-radius: 3px;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb {
+            -webkit-border-radius: 3px;
+            border-radius: 3px;
+            background: #eeeeee;
+            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+        }
+        body,input,button{font-family: Microsoft YaHei;font-size: 14px;}
+        .logo{float:left; width:60px; height:53px; padding:0; margin:15px; text-indent: -9999px; background: url("img/tomato.png") no-repeat;}
+        .topbox{position: absolute; left: 50%; margin:20px 15px 15px -330px;}
+        #inputbox{border-width:2px;width:500px; height: 32px; line-height: 32px; font-size: 18px;}
+        .setting{ margin:20px 15px 15px 15px !important; padding: 0;}
+        .setting a.dropdown-toggle{ font-size: 14px; color: #666; text-decoration: none; -moz-box-shadow:none !important;-webbkit-box-shadow:none !important;box-shadow:none !important;}
+        .setting a.dropdown-toggle:hover{ color: #333;}
+        .main{ margin: 100px 20px 20px 20px;}
+        #acList li,#planList li{position: relative; cursor: pointer}
+        .hoverMenu{position: absolute; display: none; right:0; top: 0;}
+        .hoverMenu i{ margin: 0 5px; cursor: pointer; display: inline-block;}
+        #timerPanel{
+            position:absolute; top:84px; bottom: 0; width:100%; display: none; text-align: center; color: #fff;
+            background: #202028;
+            background-image: -moz-linear-gradient(top,#1e2128,#212129);
+            background-image: -webkit-gradient(linear,0 0,0 100%,from(#1e2128),to(#212129));
+            background-image: -webkit-linear-gradient(top,#1e2128,#212129);
+            background-image: -o-linear-gradient(top,#1e2128,#212129);
+            background-image: linear-gradient(to bottom,#1e2128,#212129);
+            background-repeat: repeat-x;
+        }
+        #timerPanel h2{
+            font-size: 42px; margin:50px 0 30px 0;
+            text-shadow: 2px 2px 5px #000;
+        }
+        #digits{width: 280px; height: 100px; margin: 0 auto;}
+        .cntSeparator{ margin-top: 30px;}
+        #ctrlBtn{ margin: 40px auto 0 auto;}
+        #day{
+            width: 100px; border: none; box-shadow: none; top:10px; position: absolute; left: 50%; margin-left: -50px;
+        }
+
+        .panel{
+            padding:10px 20px 20px 20px; border: 1px solid #dddddd; background: #ffffff;
+            box-shadow: 0 2px 5px rgba(0,0,0,.2);
+        }
+        .panel .panel-header{
+            height: 50px; line-height: 40px;border-bottom:1px solid #eeeeee; position: relative;
+        }
+        .panel .panel-content{
+           height:370px; overflow: auto;
+        }
+        .panel .panel-header h2{
+            margin:0; padding:0;font-size: 30px;line-height: 40px;
+        }
+        .panel ul{
+            list-style: none; margin: 0; padding: 0;
+        }
+        .panel ul li{
+            height: 40px; line-height: 40px; padding:0 70px 0 5px; font-size: 16px; border-bottom:1px solid #eeeeee;white-space: nowrap;text-overflow:ellipsis; -o-text-overflow:ellipsis; overflow:hidden;
+        }
+        .panel i{
+             color: #000;
+        }
+        .panel i:hover{
+             color: #eb3538;
+        }
+        .redPanel{
+            background: #fffafa;
+        }
+        .redPanel .panel-header h2{
+            color: #eb3538;
+        }
+        .greenPanel{
+            background: #f5fff5;
+        }
+        .greenPanel .panel-header h2{
+            color: #006600;
+        }
+
+
+    </style>
+</head>
+<body>
+    <div class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+            <a class="logo" href="./index.html">TOMATO</a>
+            <div class="input-append topbox">
+                <input id="inputbox" placeholder="主动创造，理性消费" type="text" />
+                <div class="btn-group">
+                    <button id="goactivity" class="btn btn-primary btn-large" tabindex="-1">添加待办</button>
+                    <button class="btn btn-primary btn-large dropdown-toggle" data-toggle="dropdown" tabindex="-1">
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a id="goplan" href="#">添加计划</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="setting btn-group pull-right">
+                <a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-cog icon-3x"></i></a>
+                <ul class="dropdown-menu">
+                    <li><a href="#">idea</a></li>
+                    <li><a href="#">设置</a></li>
+                    <li><a href="#">使用帮助</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#">关于</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="main">
+        <div class="row-fluid">
+            <div class="span4">
+                <div class="panel redPanel">
+                    <div class="panel-header">
+                        <h2>待办</h2>
+                    </div>
+                    <div class="panel-content">
+                        <ul id="acList">
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="span4">
+                <div class="panel greenPanel">
+                    <div class="panel-header">
+                        <h2>今日事</h2>
+                    </div>
+                    <div class="panel-content">
+                        <ul id="planList">
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="span4">
+                <div class="panel">
+                    <div class="panel-header">
+                        <h2>日志</h2>
+                        <input type="text" id="day" />
+                    </div>
+                    <div class="panel-content">
+                        <ul id="logList">
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="timerPanel">
+        <h2 id="task">设计吃番茄App的效果图</h2>
+        <div id="volume">
+            <div id="bars">
+                <div id="control"></div>
+            </div>
+        </div>
+        <div id="timer">
+            <div id="digits"></div>
+        </div>
+        <div id="ctrlBtn">
+            <button id="start" class="btn btn-large btn-success" type="button"> 开 吃 </button>
+            <button id="cancel" class="btn btn-large" type="button"> 取 消 </button>
+            <button id="pause" class="btn btn-large btn-danger hide" type="button"> 半途而废 </button>
+        </div>
+    </div>
+</body>
+
+<script type="text/javascript" src="js/jquery-1.8.0.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/jquery.websql.min.js"></script>
+<script type="text/javascript" src="js/kibo.js"></script>
+<script type="text/javascript" src="js/knobKnob.jquery.js"></script>
+<script type="text/javascript" src="js/jquery.countdown.js"></script>
+<script type="text/javascript" src="js/pikaday.js"></script>
+<script type="text/javascript" src="js/tomato.js"></script>
+</html>
